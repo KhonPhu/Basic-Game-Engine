@@ -29,6 +29,6 @@ private:
 
 	// gets the current time since last update
 	unsigned int lastUpdateTimer;
-
+	//creating the game object
 	std::vector<GameObject*> m_gameObjects;
 };

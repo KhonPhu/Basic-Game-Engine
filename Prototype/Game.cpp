@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Game.h"
-
+#include"Enemy.h"
 
 
 using namespace std;
@@ -43,6 +43,24 @@ bool Game::Start() {
 		GameObject* map = new Background(mapTexture, 0, 0);
 		// add the map object to the array 
 		m_gameObjects.push_back(map);
+
+
+
+		//initialize enemy texture
+		Texture* enemyTexture = new Texture();
+		enemyTexture->LoadImageFromFile("../assets/knight.bmp", sdlRenderer);
+		//create teh first enemy
+		GameObject* enemy1 = new Enemy(enemyTexture, 10, 20);
+		//add the first enemy to the array
+		m_gameObjects.push_back(enemy1);
+
+
+		Texture* enemyTexture1 = new Texture();
+		enemyTexture1->LoadImageFromFile("../assets/knight.bmp", sdlRenderer);
+		//Create teh second enemy
+		GameObject* enemy2 = new Enemy(enemyTexture1, 25, 653);
+		//add the second enemy to the array
+		m_gameObjects.push_back(enemy2);
 
 		//load the texture 
 		if (mapTexture != nullptr) {
