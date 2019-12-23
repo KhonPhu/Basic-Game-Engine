@@ -43,21 +43,53 @@ bool Game::Start() {
 
 		// TODO : Initialize objects here
 
+		//Map init
 		Texture* mapTexture = new Texture();
 		mapTexture->LoadImageFromFile("../assets/BACKGROUND.bmp", sdlRenderer);
+
+		//Player init
 		Texture* playerTexture = new Texture();
 		playerTexture->LoadImageFromFile("../assets/Santa_Stand.bmp", sdlRenderer);
 
+		//Enemy int
+		Texture* enemyTexture1 = new Texture();
+		enemyTexture1->LoadImageFromFile("../assets/Enemy1.bmp", sdlRenderer);
+
+		//Shop init
+		Texture* shopTexture = new Texture();
+		shopTexture->LoadImageFromFile("../assets/Shop.bmp", sdlRenderer);
+
+		//Items init
+		Texture* itemTexture = new Texture();
+		itemTexture->LoadImageFromFile("../assets/Potion.bmp", sdlRenderer);
+
+		//NPC init
+		Texture* npcTexture = new Texture();
+		npcTexture->LoadImageFromFile("../assets/NPC.bmp", sdlRenderer);
+
+		// Location of the Objects
 		Vector2 mapVector = Vector2(0, 0);
 		Vector2 playerVector = Vector2(100, 200);
+		Vector2 enemy1Vector = Vector2(600, 100);
+		Vector2 shopVector = Vector2(400, 400);
+		Vector2 itemVector = Vector2(100, 300);
+		Vector2 npcVector = Vector2(200, 0);
 
 		// create objects 
 		GameObject* map = new Background(mapTexture, mapVector);
 		GameObject* player = new Player(playerTexture, playerVector);
+		GameObject* enemy1 = new Player(enemyTexture1, enemy1Vector);
+		GameObject* shop = new Player(shopTexture, shopVector);
+		GameObject* item = new Player(itemTexture, itemVector);
+		GameObject* npc = new Player(npcTexture, npcVector);
 
 		// add the map object to the array 
 		m_gameObjects.push_back(map);
 		m_gameObjects.push_back(player);
+		m_gameObjects.push_back(enemy1);
+		m_gameObjects.push_back(shop);
+		m_gameObjects.push_back(item);
+		m_gameObjects.push_back(npc);
 
 		// check if texture load successfully 
 		if (mapTexture != nullptr) 
@@ -75,6 +107,20 @@ bool Game::Start() {
 		}
 		else {
 			cout << "Load player texture - failed" << endl;
+		}
+		if (enemyTexture1 != nullptr)
+		{
+			cout << "Load enemy texture - success" << endl;
+		}
+		else {
+			cout << "Load enemy texture - failed" << endl;
+		}
+		if (shopTexture != nullptr)
+		{
+			cout << "Load shop texture - success" << endl;
+		}
+		else {
+			cout << "Load shop texture - failed" << endl;
 		}
 
 		// Get the current clock time 

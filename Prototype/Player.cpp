@@ -19,8 +19,8 @@ Player::Player(Texture* texture, Vector2 position)
 
 void Player::Update(float deltaTime)
 {
-	m_velocity += m_acceleration * deltaTime;
-	m_position += m_velocity * deltaTime;
+	m_velocity = m_velocity + (m_acceleration * deltaTime);
+	m_position = m_position + (m_velocity * deltaTime);
 }
 
 void Player::Draw(SDL_Renderer* renderer)
@@ -35,7 +35,7 @@ void Player::Inputs()
 
 void Player::AddForce(Vector2 force)
 {
-	m_acceleration += force;
+	m_acceleration = m_acceleration + force;
 }
 
 void Player::HandleInput(Input* input)

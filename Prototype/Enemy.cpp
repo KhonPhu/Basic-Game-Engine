@@ -37,22 +37,7 @@ void Enemy::AddForce(Vector2 force)
 
 void Enemy::HandleInput(Input* input)
 {
-	if (input->IsKeyDown(SDL_SCANCODE_W))
-	{
-		AddForce(Vector2(0, -2));
-	}
-	if (input->IsKeyDown(SDL_SCANCODE_S))
-	{
-		AddForce(Vector2(0, 2));
-	}
-	if (input->IsKeyDown(SDL_SCANCODE_A))
-	{
-		AddForce(Vector2(-2, 0));
-	}
-	if (input->IsKeyDown(SDL_SCANCODE_D))
-	{
-		AddForce(Vector2(2, 0));
-	}
+	AddForce(Vector2(-5, 5));
 }
 
 Enemy::~Enemy()
