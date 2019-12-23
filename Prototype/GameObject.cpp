@@ -1,12 +1,19 @@
-#include "GameObject.h"
+﻿#include "GameObject.h"
+#include <iostream>
+
+using namespace std;
 
 GameObject::GameObject()
 {
-	m_positionX = 0;
-	m_positionY = 0;
-	m_texture = nullptr;
+	cout << "gameobject constructor" << endl;
+	m_position = Vector2(0, 0);
+	m_texture = nullptr;	
 }
 
 GameObject::~GameObject()
+{
+}
+
+void GameObject::HandleInput(Input* input)
 {
 }

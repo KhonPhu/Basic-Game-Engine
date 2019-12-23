@@ -3,20 +3,20 @@
 
 using namespace std;
 
+
 Background::Background()
 {
-	m_positionX = 0;
-	m_positionY = 0;
+	m_position.x = 0;
+	m_position.y = 0;
 	m_texture = nullptr;
 	cout << "Map Founded" << endl;
 
 }
 
-Background::Background(Texture* texture, int posX, int posY)
+Background::Background(Texture* texture, Vector2 position)
 {
 	m_texture = texture;
-	m_positionX = posX;
-	m_positionY = posY;
+	m_position = position;
 }
 
 void Background::Update(float deltaTime)
@@ -25,10 +25,10 @@ void Background::Update(float deltaTime)
 
 void Background::Draw(SDL_Renderer* renderer)
 {
-	m_texture->Draw(renderer, m_positionX, m_positionY);
+	m_texture->Draw(renderer, m_position.x, m_position.y);
 }
 
-void Background::Input()
+void Background::Inputs()
 {
 }
 

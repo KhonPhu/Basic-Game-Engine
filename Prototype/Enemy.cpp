@@ -1,32 +1,58 @@
 #include "Enemy.h"
 #include<iostream>
+
 Enemy::Enemy()
 {
-	m_positionX = 0;
-	m_positionY = 0;
-	m_texture = nullptr;
 	std::cout << "Enemy constructor" << std::endl;
 
 }
 
-Enemy::Enemy(Texture* texture, int posX, int posY)
+Enemy::Enemy(Texture* texture, Vector2 position)
 {
 	m_texture = texture;
-	m_positionX = posX;
-	m_positionY = posY;
+	m_position = position;
+	m_velocity = Vector2(0, 0);
+	m_acceleration = Vector2(0, 0);
 }
 
 void Enemy::Draw(SDL_Renderer* renderer)
 {
-	m_texture->Draw(renderer, m_positionX, m_positionY);
-}
-void Enemy::Update(float deltaTime)
-{
-	m_positionX += 100 * deltaTime;
+	m_texture->Draw(renderer, m_position.x, m_position.y);
 }
 
-void Enemy::Input()
+void Enemy::Update(float deltaTime)
 {
+	m_velocity += m_acceleration * deltaTime;
+	m_position += m_velocity * deltaTime;
+}
+
+void Enemy::Inputs()
+{
+}
+
+void Enemy::AddForce(Vector2 force)
+{
+	m_acceleration += force;
+}
+
+void Enemy::HandleInput(Input* input)
+{
+	if (input->IsKeyDown(SDL_SCANCODE_W))
+	{
+		AddForce(Vector2(0, -2));
+	}
+	if (input->IsKeyDown(SDL_SCANCODE_S))
+	{
+		AddForce(Vector2(0, 2));
+	}
+	if (input->IsKeyDown(SDL_SCANCODE_A))
+	{
+		AddForce(Vector2(-2, 0));
+	}
+	if (input->IsKeyDown(SDL_SCANCODE_D))
+	{
+		AddForce(Vector2(2, 0));
+	}
 }
 
 Enemy::~Enemy()

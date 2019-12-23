@@ -1,6 +1,6 @@
-#include <iostream>
+﻿#include <iostream>
 #include "Game.h"
-#include"Enemy.h"
+
 
 
 using namespace std;
@@ -13,6 +13,9 @@ Game::Game() {
 
 	lastUpdateTimer = 0;
 
+	anim = nullptr;
+
+	input = nullptr;
 
 
 	// if the initialization was not successful 
@@ -35,43 +38,43 @@ bool Game::Start() {
 	if (sdlRenderer != nullptr) {
 		cout << "Create Renderer - success" << endl;
 
+		//Initialize Input
+		input = new Input();
+
 		// TODO : Initialize objects here
 
 		Texture* mapTexture = new Texture();
 		mapTexture->LoadImageFromFile("../assets/BACKGROUND.bmp", sdlRenderer);
-		// create a map object 
-		GameObject* map = new Background(mapTexture, 0, 0);
+		Texture* playerTexture = new Texture();
+		playerTexture->LoadImageFromFile("../assets/Santa_Stand.bmp", sdlRenderer);
+
+		Vector2 mapVector = Vector2(0, 0);
+		Vector2 playerVector = Vector2(100, 200);
+
+		// create objects 
+		GameObject* map = new Background(mapTexture, mapVector);
+		GameObject* player = new Player(playerTexture, playerVector);
+
 		// add the map object to the array 
 		m_gameObjects.push_back(map);
+		m_gameObjects.push_back(player);
 
-
-
-		//initialize enemy texture
-		Texture* enemyTexture = new Texture();
-		enemyTexture->LoadImageFromFile("../assets/knight.bmp", sdlRenderer);
-		//create teh first enemy
-		GameObject* enemy1 = new Enemy(enemyTexture, 10, 20);
-		//add the first enemy to the array
-		m_gameObjects.push_back(enemy1);
-
-
-		Texture* enemyTexture1 = new Texture();
-		enemyTexture1->LoadImageFromFile("../assets/knight.bmp", sdlRenderer);
-		//Create teh second enemy
-		GameObject* enemy2 = new Enemy(enemyTexture1, 25, 653);
-		//add the second enemy to the array
-		m_gameObjects.push_back(enemy2);
-
-		//load the texture 
-		if (mapTexture != nullptr) {
-
+		// check if texture load successfully 
+		if (mapTexture != nullptr) 
+		{
 			cout << "Load map texture - success" << endl;
-
-
 		}
 		else {
 			cout << "Load map texture - failed" << endl;
 			return false;
+		}
+		if (playerTexture != nullptr)
+		{
+			cout << "Load player texture - success" << endl;
+			anim = new Animation(playerTexture, 1, 0.1f);
+		}
+		else {
+			cout << "Load player texture - failed" << endl;
 		}
 
 		// Get the current clock time 
@@ -89,8 +92,37 @@ void Game::ProcessInput() {
 	
 	// call the input function of all the game objects 
 	for (int i = 0; i < m_gameObjects.size(); ++i) {
-		m_gameObjects[i]->Input();
+		m_gameObjects[i]->Inputs();
 	}
+
+	SDL_Event e;
+	// handle events on queue 
+	while(SDL_PollEvent(&e))
+	{
+		// 'ESC' key is pressed, or close button is pressed on SDL window. 
+		if(e.type == SDL_QUIT)
+		{
+			cout << "Quit" << endl;
+			isGameOver = true;
+		}
+		if (e.type == SDL_SCANCODE_W)
+		{
+			cout << "Up" << endl;
+		}
+		if (e.type == SDL_SCANCODE_S)
+		{
+			cout << "Down" << endl;
+		}
+		if (e.type == SDL_SCANCODE_A)
+		{
+			cout << "Left" << endl;
+		}
+		if (e.type == SDL_SCANCODE_D)
+		{
+			cout << "Right" << endl;
+		}
+	}
+
 }
 void Game::Update() {
 	// calculate deltaTime 
@@ -106,19 +138,19 @@ void Game::Update() {
 
 	// Get the current time  
 	lastUpdateTimer = SDL_GetTicks();
-	//cout << "DeltaTime: " << deltaTime << endl;
 
 	//TODO: update stuff here
-	//anim->Update(deltaTime);
-	//m_player->Update(deltaTime);
+	anim->Update(deltaTime);
 }
 void Game::Draw() {
 	SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
 	SDL_RenderClear(sdlRenderer);
 
+	// call the draw function of all the game objects
 	for (int i = 0; i < m_gameObjects.size(); ++i) {
 		m_gameObjects[i]->Draw(sdlRenderer);
 	}
+	anim->Draw(sdlRenderer, 100, 200);
 
 	SDL_RenderPresent(sdlRenderer);
 }
@@ -137,9 +169,15 @@ void Game::Run(const char* title, int width, int height, bool fullscreen) {
 
 	if (sdlWindow != nullptr && Start()) {
 		cout << "CreateWindow - Success" << endl;
+		
+		//Start game loop
 		while (!isGameOver) {
+
+			//check for input
 			ProcessInput();
+			// update object
 			Update();
+			//draw on the windows
 			Draw();
 		}
 	}

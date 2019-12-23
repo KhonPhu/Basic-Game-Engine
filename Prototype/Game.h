@@ -1,9 +1,13 @@
 #pragma once
-#include "Game.h"
 
 //using SDL & Texture class
 #include "Texture.h"
+#include "Animation.h"
 #include "Background.h"
+#include "Player.h"
+#include "Enemy.h"
+#include "NPC.h"
+#include "Input.h"
 #include <vector>
 
 class Game
@@ -29,6 +33,18 @@ private:
 
 	// gets the current time since last update
 	unsigned int lastUpdateTimer;
-	//creating the game object
+
+	// Animate the objects
+	Animation* anim;
+
+
+	// location of the objects
 	std::vector<GameObject*> m_gameObjects;
+
+	//event union
+	SDL_Event e;
+
+	//Input event
+	Input * input;
+
 };

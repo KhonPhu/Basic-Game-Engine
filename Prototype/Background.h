@@ -6,13 +6,17 @@ class Background : public GameObject
 {
 public:
 	Background();
-	Background(Texture* texture, int posX, int posY);
+	Background(Texture* texture, Vector2 position);
 
 	void Update(float deltaTime) override;
 	void Draw(SDL_Renderer* renderer) override;
-	void Input() override;
+	void Inputs() override;
 
 
 	~Background();
+
+private:
+	Vector2 m_velocity;
+	Vector2 m_acceleration;
 };
 
